@@ -6,6 +6,7 @@ Our approach leverages tailored code construction strategies to generate input p
 By default, we uses Csmith to produce seed programs. 
 
 # Structure of the project
+
 ```
 Core operations is under the main folder:
 |-- AST_Information # The AST analysis implementation directory
@@ -18,6 +19,24 @@ Core operations is under the main folder:
 |-- common # The common information extraction functions across overall process
 |-- Overall # The overall testing process execution implemention directory
 | |-- Main.java  # The entrance of overall testing
-|-- processtimer # The process dealing and just-in-time memory check implemention directory
+|-- processtimer # The process dealing and real-time memory check implemention directory
 |-- sanitizer # The undefined behaviour filtering implemention directory
 ```
+
+# Usage
+
+### Step 1: Install necessary packages
+
+- Ubuntu >= 20
+- Java >= 17
+- Csmith (Please install it following [Csmith](https://github.com/csmith-project/csmith))
+- CSMITH_HOME: After installing Csmith, please set the environment variable `CSMITH_HOME` to the installation path, with which we can locate `$CSMITH_HOME/include/csmith.h`.
+- add file `libsigar-amd64-linux.so` into `/usr/lib` and `/usr/lib64`
+
+### Step 2: Run
+Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/src/Overall`.
+
+
+
+
+

@@ -35,18 +35,59 @@ Core operations is under the main folder:
 - add file `libsigar-amd64-linux.so` into `/usr/lib` and `/usr/lib64`
 
 ### Step 2: Test clang ast analysis functionality
-using following instruction to test the clang ast analysis:
-If there is a sample.c
+
+Assuming there is a program test.c:
 ```
+#include <stdio.h>
+
+int add(int a, int b) {
+  return a + b;
+}
+
+void main() {
+  int x = 3;
+  int y = 4;
+  printf("%d\n", add(x, y));
+}
 ```
 
-`clang -fsyntax-only -Xclang -ast-dump example.c -w -Xanalyzer -analyzer-disable-all-checking -I $CSMITH_HOME/include`
-then it outputs:
+The command clang -fsyntax-only -Xclang -ast-dump test.c -w -Xanalyzer -analyzer-disable-all-checking -I $CSMITH_HOME/include is executed, and if the following output occurs, then there is no issue.
 ```
-
+|-FunctionDecl 0x55f86a0e1450 <test.c:3:1, line:5:1> line:3:5 used add 'int (int, int)'
+| |-ParmVarDecl 0x55f86a0e12f0 <col:9, col:13> col:13 used a 'int'
+| |-ParmVarDecl 0x55f86a0e1370 <col:16, col:20> col:20 used b 'int'
+| `-CompoundStmt 0x55f86a0e15a8 <col:23, line:5:1>
+|   `-ReturnStmt 0x55f86a0e1598 <line:4:3, col:14>
+|     `-BinaryOperator 0x55f86a0e1578 <col:10, col:14> 'int' '+'
+|       |-ImplicitCastExpr 0x55f86a0e1548 <col:10> 'int' <LValueToRValue>
+|       | `-DeclRefExpr 0x55f86a0e1508 <col:10> 'int' lvalue ParmVar 0x55f86a0e12f0 'a' 'int'
+|       `-ImplicitCastExpr 0x55f86a0e1560 <col:14> 'int' <LValueToRValue>
+|         `-DeclRefExpr 0x55f86a0e1528 <col:14> 'int' lvalue ParmVar 0x55f86a0e1370 'b' 'int'
+`-FunctionDecl 0x55f86a0e1608 <line:7:1, line:11:1> line:7:6 main 'void ()'
+  `-CompoundStmt 0x55f86a0e1a20 <col:13, line:11:1>
+    |-DeclStmt 0x55f86a0e1750 <line:8:3, col:12>
+    | `-VarDecl 0x55f86a0e16c8 <col:3, col:11> col:7 used x 'int' cinit
+    |   `-IntegerLiteral 0x55f86a0e1730 <col:11> 'int' 3
+    |-DeclStmt 0x55f86a0e1808 <line:9:3, col:12>
+    | `-VarDecl 0x55f86a0e1780 <col:3, col:11> col:7 used y 'int' cinit
+    |   `-IntegerLiteral 0x55f86a0e17e8 <col:11> 'int' 4
+    `-CallExpr 0x55f86a0e19c0 <line:10:3, col:27> 'int'
+      |-ImplicitCastExpr 0x55f86a0e19a8 <col:3> 'int (*)(const char *, ...)' <FunctionToPointerDecay>
+      | `-DeclRefExpr 0x55f86a0e1820 <col:3> 'int (const char *, ...)' Function 0x55f86a0c9450 'printf' 'int (const char *, ...)'
+      |-ImplicitCastExpr 0x55f86a0e1a08 <col:10> 'const char *' <NoOp>
+      | `-ImplicitCastExpr 0x55f86a0e19f0 <col:10> 'char *' <ArrayToPointerDecay>
+      |   `-StringLiteral 0x55f86a0e1840 <col:10> 'char[4]' lvalue "%d\n"
+      `-CallExpr 0x55f86a0e1900 <col:18, col:26> 'int'
+        |-ImplicitCastExpr 0x55f86a0e18e8 <col:18> 'int (*)(int, int)' <FunctionToPointerDecay>
+        | `-DeclRefExpr 0x55f86a0e1860 <col:18> 'int (int, int)' Function 0x55f86a0e1450 'add' 'int (int, int)'
+        |-ImplicitCastExpr 0x55f86a0e1930 <col:22> 'int' <LValueToRValue>
+        | `-DeclRefExpr 0x55f86a0e1880 <col:22> 'int' lvalue Var 0x55f86a0e16c8 'x' 'int'
+        `-ImplicitCastExpr 0x55f86a0e1948 <col:25> 'int' <LValueToRValue>
+          `-DeclRefExpr 0x55f86a0e18a0 <col:25> 'int' lvalue Var 0x55f86a0e1780 'y' 'int'
 ```
 ### Step 3: Update the corresponding folder information
-In the `/src/Overall` folder, the `swarmDir` is a folder containing all seed programs generated using Csmith, while the muIndexPath is a folder that includes all test programs (i.e., both the original and transformed programs). Within this folder, each subfolder, named after the seed program, contains all the test programs generated for that specific seed. Furthermore, the execution results of these programs are also recorded in a text file. Finally, the execution results of all programs within the same folder are compared to check for consistency. If any discrepancies are found, the corresponding program is logged in a separate text file.
+In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of the folder that contains all seed programs generated using Csmith., while the String `muIndexPath` is the absolute path of the folder that includes all test programs (i.e., both the original and transformed programs). Within the `muIndexPath`, each subfolder(假设叫random0) contains all the test programs generated for that specific seed. Furthermore, the execution results of these programs are also recorded in a text file(`output.txt`) within corresonding subfolder. Finally, the programs with discrepancies are logged in a separate text file(`incon.txt`). 
+
 
 ### Step 4: Open and Run the project
 Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/src/Overall`.

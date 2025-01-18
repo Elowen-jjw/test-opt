@@ -10,14 +10,14 @@ By default, we uses Csmith to produce seed programs.
 ```
 Core operations is under the main folder:
 |-- AST_Information # The AST analysis implementation directory
-|-- mutations # The tailored code genertion strategies and mutate implementation directory target different optimizations
+|-- mutations # The tailored code genertion strategies and mutate implementation directory
 |-- csmith # The seed program generation implementation directory using Csmith
 | |-- SwarmGen.java  # Updating configurations of Csmith
 |-- RespectfulTestResult # The programs testing execution and their results comparison implementation directory
-|-- ObjectOperation # The common operations targeted different datatype
-|-- common # The common information extraction functions across overall process
+|-- ObjectOperation # The common operations targeted different datatype implemention directory
+|-- common # The common information extraction functions implemention directory
 |-- Overall # The overall testing process execution implemention directory
-| |-- Main.java  # The entrance of overall testing
+| |-- Main.java  # The entrance of overall testing process
 |-- processtimer # The process dealing and real-time memory check implemention directory
 |-- sanitizer # The undefined behaviour filtering implemention directory
 |-- utility # The java beans of overall testing process

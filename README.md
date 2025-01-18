@@ -32,7 +32,7 @@ Core operations is under the main folder:
 - Csmith (Please install it following [Csmith](https://github.com/csmith-project/csmith))
 - CSMITH_HOME: After installing Csmith, please set the environment variable `CSMITH_HOME` to the installation path, with which we can locate `$CSMITH_HOME/include/csmith.h`.
 - Clang >= 14
-- add file `libsigar-amd64-linux.so` into `/usr/lib` and `/usr/lib64`
+- Add file `libsigar-amd64-linux.so` into `/usr/lib` and `/usr/lib64`
 
 ### Step 2: Test clang ast analysis functionality
 
@@ -51,7 +51,7 @@ void main() {
 }
 ```
 
-The command clang -fsyntax-only -Xclang -ast-dump test.c -w -Xanalyzer -analyzer-disable-all-checking -I $CSMITH_HOME/include is executed, and if the following output occurs, then there is no issue.
+The command `clang -fsyntax-only -Xclang -ast-dump test.c -w -Xanalyzer -analyzer-disable-all-checking -I $CSMITH_HOME/include` is executed, and if the following output occurs, then there is no issue.
 ```
 |-FunctionDecl 0x55f86a0e1450 <test.c:3:1, line:5:1> line:3:5 used add 'int (int, int)'
 | |-ParmVarDecl 0x55f86a0e12f0 <col:9, col:13> col:13 used a 'int'
@@ -90,7 +90,7 @@ In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of t
 ```
 |-- random 
 | |-- block # each block aligns a loop of the seed program
-| | |-- mutate # each mutate aligns an initial program and transformed program
+| | |-- mutate # each mutate includes an initial program and its transformed programs
 | | | |-- initial_program.c
 | | | |-- initial_transformed.c
 | | | |-- compiler_output.txt
@@ -100,7 +100,7 @@ In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of t
 ```
 Finally, the programs with discrepancies are logged in the `gcc` and `llvm` folder respectively in the `muIndexPath` folder. 
 
-In the `/src/Overall/Main.java`, you also need to modify the third argument in `OverallProcess overall = new OverallProcess(swarmDir, muIndexPath, "")`. The available options are: fusion_samenumber, fusion_add, fusion_max, invariant, unswitching_compound, unrolling.
+In the `/src/Overall/Main.java`, you also need to modify the third argument in `OverallProcess overall = new OverallProcess(swarmDir, muIndexPath, "")`. The available options are: `fusion_samenumber`, `fusion_add`, `fusion_max`, `invariant`, `unswitching_compound`, `unrolling`.
 
 If you want to change the Csmith generation configuration, you need to modify it in `SwarmGen.java`. Currently, we randomly select configurations for generation.
 

@@ -95,7 +95,7 @@ Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/sr
 # Find Bugs
 We conduct a preliminary evaluation of this approach on GCC and LLVM, and have successfully detected five incorrect optimization bugs.
 
-# Bug List
+### Bug List
 
 | ID  | Compiler | Issue           | Status   |
 | --- | -------- | --------------- | -------- |

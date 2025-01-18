@@ -10,7 +10,6 @@ By default, we uses Csmith to produce seed programs.
 ```
 Core operations is under the main folder:
 |-- AST_Information # The AST analysis implementation directory
-|-- genMutate # The mutate generation execution directory
 |-- mutations # The tailored code genertion strategies and mutate implementation directory target different optimizations
 |-- csmith # The seed program generation implementation directory using Csmith
 | |-- SwarmGen.java  # Updating configurations of Csmith
@@ -21,6 +20,7 @@ Core operations is under the main folder:
 | |-- Main.java  # The entrance of overall testing
 |-- processtimer # The process dealing and real-time memory check implemention directory
 |-- sanitizer # The undefined behaviour filtering implemention directory
+|-- utility # The java beans of overall testing process
 ```
 
 # Usage
@@ -35,6 +35,20 @@ Core operations is under the main folder:
 
 ### Step 2: Run
 Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/src/Overall`.
+
+# Find Bugs
+We conduct a preliminary evaluation of this approach on GCC and LLVM, and have successfully detected five incorrect optimization bugs.
+
+# Bug List
+
+| ID  | Compiler | Issue           | Status   |
+| --- | -------- | --------------- | -------- |
+| 1   | GCC      | [GCC-113709](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113709) | Fixed     |
+| 2   | GCC      | [GCC-113702](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113702) | Fixed     |
+| 3   | GCC      | [GCC-113669](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=113669) | Confirmed |
+| 4   | LLVM     | [LLVM-75809](https://github.com/llvm/llvm-project/issues/75809)   | Confirmed |
+| 5   | LLVM     | [LLVM-112880](https://github.com/llvm/llvm-project/issues/112880) | Confirmed |
+
 
 
 

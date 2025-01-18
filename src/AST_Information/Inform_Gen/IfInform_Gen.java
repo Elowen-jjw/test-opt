@@ -1,9 +1,12 @@
 package AST_Information.Inform_Gen;
 
-import AST_Information.model.AstVariable;
-import AST_Information.model.IfStatement;
+import AST_Information.model.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

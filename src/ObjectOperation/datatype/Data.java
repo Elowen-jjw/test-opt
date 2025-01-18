@@ -3,8 +3,6 @@ package ObjectOperation.datatype;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Data {
 
@@ -64,67 +62,6 @@ public class Data {
 		}else {
 			return 1;
 		}
-	}
-
-	public static String addPrintf(int lineNumber, String type, String printfExpression, String calculateExpression){
-		String dataType = "";
-		if(type.equals("char") || type.equals("signed char") || type.equals("int8_t")
-				|| type.equals("short") || type.equals("signed short") || type.equals("signed short int") || type.equals("short int") || type.equals("int16_t")
-				|| type.equals("int") || type.equals("signed int") || type.equals("signed") || type.equals("int32_t")){
-			dataType = "d";
-		}else if(type.equals("unsigned char") || type.equals("uint8_t")
-				|| type.equals("unsigned short") || type.equals("unsigned short int") || type.equals("uint16_t")
-				|| type.equals("unsigned int") || type.equals("unsigned") || type.equals("uint32_t")){
-			dataType = "u";
-		}else if(type.equals("long") || type.equals("signed long") || type.equals("long int")
-				|| type.equals("signed long int")|| type.equals("int64_t")){
-			dataType = "ld";
-		}else if(type.equals("unsigned long") || type.equals("unsigned long int") || type.equals("uint64_t")){
-			dataType = "lu";
-		}
-		String printfString = "printf(\"" + lineNumber +": " + printfExpression + " @ %" + dataType + "\\n\", " + calculateExpression + ");";
-		String elseString = "printf(\"" + lineNumber +": " + printfExpression + " @ " + "NULL\\n\");";
-		if(printfExpression.matches("\\(\\*+[glp]_\\d+.*\\)(\\.f\\d+)?")) {
-			return generateNullCheck(printfExpression) + "{\n" + printfString + "\n} else {\n" +  elseString + "\n}";
-		} else {
-			return printfString;
-		}
-	}
-
-	public static String generateNullCheck(String varName) {
-		// 计算指针级别
-		int pointerLevel = 0;
-		for (char c : varName.toCharArray()) {
-			if (c == '*') {
-				pointerLevel++;
-			}
-		}
-
-		// 生成 null 检查的字符串
-		StringBuilder nullCheckBuilder = new StringBuilder("if (");
-		String vName = varName.replaceAll("\\*|\\(|\\)|(\\.f\\d+)", "").trim();
-//		String fname = "";
-//		Matcher m = Pattern.compile("\\.f\\d+").matcher(varName);
-//		if(m.find()){
-//			fname = m.group();
-//		}
-
-		// 为每个指针级别添加 null 检查
-		for (int i = 0; i < pointerLevel; i++) {
-			// 逐级构造变量名
-			nullCheckBuilder.append("(").append("*".repeat(i)).append(vName).append(")").append(" != NULL");
-			if (i < pointerLevel - 1) {
-				nullCheckBuilder.append(" && "); // 添加逻辑与
-			}
-		}
-
-		nullCheckBuilder.append(")");
-
-		return nullCheckBuilder.toString();
-	}
-
-	public static void main(String args[]){
-		System.out.println(generateNullCheck("(***p_45)"));
 	}
 	
 }

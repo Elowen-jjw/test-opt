@@ -1,10 +1,8 @@
 package AST_Information;
 
-import AST_Information.model.IfStatement;
-import AST_Information.model.LoopStatement;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+import AST_Information.model.*;
 
 public class AstStmtOperation {
 	public static List<LoopStatement> getAllLoops(List<LoopStatement> outmostLoopList){

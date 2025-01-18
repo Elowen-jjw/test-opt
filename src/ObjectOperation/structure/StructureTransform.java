@@ -5,7 +5,7 @@ import AST_Information.Inform_Gen.AstInform_Gen;
 import AST_Information.Inform_Gen.LoopInform_Gen;
 import AST_Information.model.LoopStatement;
 import ObjectOperation.file.FileModify;
-import ObjectOperation.file.FileInfo;
+import ObjectOperation.file.getAllFileList;
 import processtimer.ProcessTerminal;
 
 import java.io.File;
@@ -23,7 +23,7 @@ public class StructureTransform {
         File dir = new File("/home/nicai/桌面/initialPart");
         List<File> allFileList = new ArrayList<File>();
 
-        FileInfo getFileList = new FileInfo(dir);
+        getAllFileList getFileList = new getAllFileList(dir);
         getFileList.getAllFile(dir, allFileList);
         getFileList.compareFileList(allFileList);
 
@@ -204,6 +204,6 @@ public class StructureTransform {
     public static void formatFile(File file){
         String command = "clang-format -i " + file.getAbsolutePath();
         ProcessTerminal pt = new ProcessTerminal();
-        pt.voidNotMemCheck(command, "sh");
+        pt.processThreadNotLimitJustExec(command, "sh");
     }
 }

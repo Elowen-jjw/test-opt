@@ -1,16 +1,84 @@
 package processtimer;
 
+import org.hyperic.sigar.Mem;
+import org.hyperic.sigar.ProcState;
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.concurrent.TimeUnit;
 
 public class ProcessTerminal {
 
-	public static List<String> listNotMemCheck(String command, String bashType){
-		Process proc = startProcess(command, bashType);
+	public List<String> processThreadTimeLimit(String command, int second, String bashType){
+		
+		String[] cmd = new String[] { "/bin/" + bashType, "-c", command };
+		ProcessBuilder builder = new ProcessBuilder(cmd);
+		builder.redirectErrorStream(true);
+		Process proc = null;
+		try {
+			proc = builder.start();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		ProcessWorker pw = new ProcessWorker(proc);
+		pw.start();
+		ProcessStatus ps = pw.getPs();
+		try {
+			pw.join(second * 1000);
+			if(ps.exitCode == ps.CODE_STARTED) {
+				pw.interrupt();
+				List<String> result = new ArrayList<String>();
+				proc.destroy();
+				if(proc.isAlive()){
+					System.out.println("kill process " + proc.pid());
+					Runtime.getRuntime().exec("kill -9 " + proc.pid());
+				}
+				return result;
+			}
+			else {
+				proc.destroy();
+				if(proc.isAlive()){
+					System.out.println("kill process " + proc.pid());
+					Runtime.getRuntime().exec("kill -9 " + proc.pid());
+				}
+				return ps.output;
+			}
+		}catch(InterruptedException e) {
+			pw.interrupt();
+			proc.destroy();
+			if(proc.isAlive()){
+				System.out.println("kill process " + proc.pid());
+				try {
+					Runtime.getRuntime().exec("kill -9 " + proc.pid());
+				} catch (IOException ex) {
+					throw new RuntimeException(ex);
+				}
+			}
+			try {
+				throw e;
+			} catch (InterruptedException ex) {
+				throw new RuntimeException(ex);
+			}
+		} catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+	
+	public List<String> processThreadNotLimit(String command, String bashType){
+		
+		String[] cmd = new String[] { "/bin/"+bashType, "-c", command };
+		ProcessBuilder builder = new ProcessBuilder(cmd);
+		builder.redirectErrorStream(true);
+		Process proc = null;
+		try {
+			proc = builder.start();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		ProcessWorker pw = new ProcessWorker(proc);
 		pw.start();
@@ -38,8 +106,16 @@ public class ProcessTerminal {
 		}
 	}
 	
-	public static void voidNotMemCheck(String command, String bashType){
-		Process proc = startProcess(command, bashType);
+	public void processThreadNotLimitJustExec(String command, String bashType){
+		String[] cmd = new String[] { "/bin/" + bashType, "-c", command };
+		ProcessBuilder builder = new ProcessBuilder(cmd);
+		builder.redirectErrorStream(true);
+		Process proc = null;
+		try {
+			proc = builder.start();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		ProcessWorker pw = new ProcessWorker(proc);
 		pw.start();
@@ -61,72 +137,69 @@ public class ProcessTerminal {
 		}
 	}
 
-	//isAddTimeout: 当进程运行超时时，是否在返回list中添加timeout string
-	//isNeedDelAout: 是否需要在该进程结束时检查并kill含有相关compiler以及aout的进程
-	//aoutName: 如果isNeedDelAout为true，则该参数为a.out/csmith/想要kill的进程名字，否则随意
-	public static List<String> listMemCheck(String command, int second, String bashType, boolean isAddTimeout,
-											boolean isNeedDelSpecificProcs, List<String> delProcessNameList){
-		Process proc = startProcess(command, bashType);
-		ProcessWorker pw = new ProcessWorker(proc);
-		CheckMemory cm = new CheckMemory(proc);
-		Thread cmThread = new Thread(cm);
-		pw.start();
-		cmThread.start();
-
-		ProcessStatus ps = pw.getPs();
+	public List<String> execTerminal(String command, int second, String bashType){
 		try {
-			pw.join(second * 1000L);
-			if(ps.exitCode == ps.CODE_STARTED) { //deal with timeout situation
-				pw.interrupt();
-				List<String> result = new ArrayList<String>();
-				if(isAddTimeout) {
-					result.add("timeout");
-				}
+			List<String> resultLines = new ArrayList<String>();
+			String[] cmd = new String[] { "/bin/" + bashType, "-c", command };
+			String execLine = "";
+			ProcessBuilder builder = new ProcessBuilder(cmd);
+			builder.redirectErrorStream(true);
+			Process proc = builder.start();
+
+			if (!proc.waitFor(second, TimeUnit.SECONDS)) {
 				proc.destroy();
-				DealMomery.killProcess(proc);
-				if(isNeedDelSpecificProcs) {
-					DealMomery.killSpecificPros(delProcessNameList);
-				}
-				cmThread.interrupt();
-				return result;
+				return new ArrayList<String>();
 			}
-			else {
-				proc.destroy();
-				DealMomery.killProcess(proc);
-				if(isNeedDelSpecificProcs) {
-					DealMomery.killSpecificPros(delProcessNameList);
-				}
-				cmThread.interrupt();
-				return ps.output;
+
+			InputStream ins = proc.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
+			while((execLine = br.readLine()) != null) {
+				resultLines.add(execLine);
 			}
-		}catch(InterruptedException e) {
-			pw.interrupt();
+
 			proc.destroy();
-			DealMomery.killProcess(proc);
-			if(isNeedDelSpecificProcs) {
-				DealMomery.killSpecificPros(delProcessNameList);
-			}
-			cmThread.interrupt();
-			try {
-				throw e;
-			} catch (InterruptedException ex) {
-				throw new RuntimeException(ex);
-			}
-		}
-    }
 
-	public static Process startProcess(String command, String bashType){
-		String[] cmd = new String[] { "/bin/" + bashType, "-c", command };
-		ProcessBuilder builder = new ProcessBuilder(cmd);
-		builder.redirectErrorStream(true);
-		Process proc = null;
-		try {
-			proc = builder.start();
+			return resultLines;
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		}
-		return proc;
 	}
 
+
+	public void killThread(){
+		try {
+			Sigar sigar = new Sigar();
+
+			for (long pid : sigar.getProcList()) {
+				ProcState ps = sigar.getProcState(pid);
+				if(ps.getName().startsWith("")){
+					System.out.println(pid + " will be killed.............");
+					Runtime.getRuntime().exec("kill -9 " + pid);
+				}
+			}
+
+		} catch (SigarException e) {
+			killThread();
+		} catch (IOException e) {
+
+		}
+	}
+
+
+	public void printMemInfo(){
+		try {
+			Sigar sigar = new Sigar();
+			Mem mem = sigar.getMem();
+
+			System.out.println("内存实际占用情况： " + mem.getActualUsed() / 1024 / 1024 /1024  + "g");
+			System.out.println("内存实际空闲情况： " + mem.getActualFree() / 1024 / 1024 /1024  + "g");
+		}  catch (SigarException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
 }

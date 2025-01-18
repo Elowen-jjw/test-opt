@@ -1,7 +1,9 @@
 package ObjectOperation.list;
 
-import common.ExceptionCheck;
 import ObjectOperation.file.FileModify;
+import overall.OverallProcess;
+import processtimer.ProcessCompiler;
+import processtimer.ProcessTerminal;
 import utity.AvailableVariable;
 import utity.AvarExecTimes;
 
@@ -9,6 +11,43 @@ import java.io.File;
 import java.util.*;
 
 public class RandomAndCheck {
+
+    //if it had segmentation fault, it would return false;
+    public boolean checkSegmentation(File file){
+        String aoutFilename = file.getName().substring(0, file.getName().lastIndexOf(".c"));
+
+        String command = (OverallProcess.commandType.equals("gcc")? "export LANGUAGE=en && export LANG=en_US.UTF-8 && ": "")
+                + "cd " + file.getParent() + " && " + OverallProcess.commandType + " " + file.getName()
+                + " -lm -I $CSMITH_HOME/include -o " + aoutFilename;
+        ProcessTerminal pt = new ProcessTerminal();
+        pt.processThreadNotLimitJustExec(command, "sh");
+
+        File aoutFile = new File(file.getParent() + "/" + aoutFilename);
+        if(!aoutFile.exists()){
+            return false;
+        }
+
+        command = "cd " + file.getParent() + " && " + "./" + aoutFilename;
+
+        List<String> execLines = ProcessCompiler.processNotKillCompiler(command, 30, "sh", aoutFilename);
+
+        deleteAoutFile(file, aoutFilename);
+
+        for(String s: execLines) {
+            if(s.contains("Segmentation fault (core dumped)")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void deleteAoutFile(File file, String aoutFilename){
+        File outFile = new File(file.getParent() + "/" + aoutFilename);
+        if(outFile.exists()){
+            outFile.delete();
+        }
+    }
+
     public List<AvailableVariable> getAvailableVarList(File file, List<AvailableVariable> var_value_type, int lineNumber){//lineNumber locates the next line of header
         List<AvailableVariable> availableVar = new ArrayList<>();
         for(AvailableVariable av: var_value_type){
@@ -25,19 +64,19 @@ public class RandomAndCheck {
             addLines.put(lineNumber, addList);
 
             fm.addLinesToFile(tempFile, addLines, true);
-            ExceptionCheck ec = new ExceptionCheck();
-
-            if(ec.filterUB(tempFile)){
+            if(checkSegmentation(tempFile)){
                 availableVar.add(av);
             }
             tempFile.delete();
+
         }
         return availableVar;
     }
 
 
     public List<AvailableVariable> getRandomAvailableVarNotChange(List<AvailableVariable> varList, int number){
-        List<AvailableVariable> newValueList = new ArrayList<>(varList);
+        List<AvailableVariable> newValueList = new ArrayList<>();
+        CommonOperation.copyAvaiableVarList(newValueList, varList);
         return getAvailableVariables(newValueList, number);
     }
 

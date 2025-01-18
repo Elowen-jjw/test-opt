@@ -1,12 +1,7 @@
 package ObjectOperation.datatype;
 
-import mutate.minmax.MinMaxResult;
-
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public class IntegerOperation {
 
@@ -101,17 +96,6 @@ public class IntegerOperation {
 			nums[0] = getTwoExp(tempN);
 		}
 		return nums;
-	}
-
-	public static MinMaxResult getMinMax(Set<BigInteger> bigIntegers) {
-		if (bigIntegers == null || bigIntegers.isEmpty()) {
-			return new MinMaxResult();
-		}
-
-		BigInteger min = Collections.min(bigIntegers);
-		BigInteger max = Collections.max(bigIntegers);
-
-		return new MinMaxResult(max, min);
 	}
 	
 }

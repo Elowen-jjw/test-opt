@@ -25,13 +25,15 @@ public class InitialAndTransBlock {
 
     public InitialAndTransBlock(InitialAndTransBlock oldIta){
         ProcessingBlock initialPb = new ProcessingBlock();
-        List<String> initBlockList = new ArrayList<>(oldIta.getInitialBlock().getBlockList());
+        List<String> initBlockList = new ArrayList<>();
+        CommonOperation.copyStringList(initBlockList, oldIta.getInitialBlock().getBlockList());
         initialPb.setBlockList(initBlockList);
 
         List<ProcessingBlock> transPbList = new ArrayList<>();
         for(ProcessingBlock trans: oldIta.getTransformedBlockList()){
             ProcessingBlock transPb = new ProcessingBlock();
-            List<String> transBlockList = new ArrayList<>(trans.getBlockList());
+            List<String> transBlockList = new ArrayList<>();
+            CommonOperation.copyStringList(transBlockList, trans.getBlockList());
             transPb.setBlockList(transBlockList);
             transPbList.add(transPb);
         }

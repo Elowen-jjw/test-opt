@@ -42,9 +42,4 @@ public class AvailableVariable {
     public void setConst(boolean aConst) {
         isConst = aConst;
     }
-
-    public boolean isConst() {
-        return isConst;
-    }
-
 }

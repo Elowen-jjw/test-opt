@@ -24,7 +24,6 @@ public class AstVariable {
 	public List<Integer> assignLine = new ArrayList<Integer>();
 	public List<Integer> useLine = new ArrayList<Integer>();
 	public Set<Integer> existUseLine = new HashSet<Integer>();
-	public StructUnionBlock su = null;
 	
 	public AstVariable() {
 		// TODO Auto-generated constructor stub
@@ -124,10 +123,7 @@ public class AstVariable {
 		if(type.contains("struct ") || type.contains("union ")) return true;
 		return false;
 	}
-
-	public void setStructUnion(StructUnionBlock su) { this.su = su; }
-	public StructUnionBlock getStructUnionBlock() {return this.su; }
-
+	
 	public static String getVarKindByType(String type) {
 		//根据type分为common, pointer, array
 		String varKind = "common";

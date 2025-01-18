@@ -23,9 +23,9 @@ public class CheckMemory implements Runnable{
 //                }
                 Mem mem = sigar.getMem();
 
+//                System.out.println("pid: " + process.pid() +" ——内存实际占用情况： " + mem.getActualUsed() / 1024 / 1024 /1024  + "g");
+//                System.out.println("pid: " + process.pid() + " ——内存实际空闲情况： " + mem.getActualFree() / 1024 / 1024 /1024  + "g");
                 if(mem.getActualFree() < (mem.getTotal() * 0.3)){
-                	System.out.println("pid: " + process.pid() +" ——内存实际占用情况： " + mem.getActualUsed() / 1024 / 1024 /1024  + "g");
-                    System.out.println("pid: " + process.pid() + " ——内存实际空闲情况： " + mem.getActualFree() / 1024 / 1024 /1024  + "g");
                     DealMomery.killClangThread();
                     DealMomery.killGccThread();
                 }
@@ -36,18 +36,6 @@ public class CheckMemory implements Runnable{
             } catch (SigarException e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    public void printMemInfo(){
-        try {
-            Sigar sigar = new Sigar();
-            Mem mem = sigar.getMem();
-            System.out.println(mem.getFreePercent());
-            System.out.println("内存实际占用情况： " + mem.getActualUsed() / 1024 / 1024 /1024  + "g");
-            System.out.println("内存实际空闲情况： " + mem.getActualFree() / 1024 / 1024 /1024  + "g");
-        }  catch (SigarException e) {
-            throw new RuntimeException(e);
         }
     }
 

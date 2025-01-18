@@ -16,8 +16,6 @@ public class FunctionBlock {
 	private List<String> wholeFunction;
 	private List<String> functionBody;
 	public TreeSet<Integer> returnLineSet = new TreeSet<Integer>();
-
-	public String returnType = "";
 	
 	public List<String> getWholeFunction(List<String> initialList){
 		wholeFunction = new ArrayList<String>();

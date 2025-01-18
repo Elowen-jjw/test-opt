@@ -4,12 +4,10 @@ import utity.AvailableVariable;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
 public class CommonOperation {
-
     public static void copyStringList(List<String> newList, List<String> oldList){
         newList.clear();
         newList.addAll(oldList);
@@ -72,30 +70,6 @@ public class CommonOperation {
         }
 
         return initialList;
-    }
-
-    public static <T> List<T> removeDuplicates(List<T> list) {
-        // 使用 LinkedHashMap 来存储去重后的元素并保持顺序
-        LinkedHashMap<String, T> map = new LinkedHashMap<>();
-
-        for (T item : list) {
-            // 去掉 "static", "const", "volatile" 这些单词
-            String processedItem = item.toString().replaceAll("\\s*(static|const|volatile)\\s*", "").trim();
-
-            // 如果该处理后的字符串不在 map 中，添加到 map
-            if (!map.containsKey(processedItem)) {
-                map.put(processedItem, item);
-            } else {
-                // 检查现有的元素，删除字符数更少的行
-                T existingItem = map.get(processedItem);
-                if (existingItem.toString().length() > item.toString().length()) {
-                    map.put(processedItem, item);
-                }
-            }
-        }
-
-        // 将 LinkedHashMap 转回 ArrayList
-        return new ArrayList<>(map.values());
     }
 
 }

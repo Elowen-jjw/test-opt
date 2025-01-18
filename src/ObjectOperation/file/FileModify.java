@@ -125,12 +125,6 @@ public class FileModify {
 	public void deleteFolder(File file){
 		String command = "rm -r " + file.getAbsolutePath();
 		ProcessTerminal pt = new ProcessTerminal();
-		pt.voidNotMemCheck(command, "sh");
+		pt.processThreadNotLimitJustExec(command, "sh");
 	}
-
-	public static void formatFile(File file){
-		String command = "clang-format -i " + file.getAbsolutePath();
-		ProcessTerminal pt = new ProcessTerminal();
-        pt.voidNotMemCheck(command, "sh");
-    }
 }

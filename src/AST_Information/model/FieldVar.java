@@ -9,7 +9,6 @@ public class FieldVar {
 	boolean isReferenced = false;
 	boolean isStructUnion = false;
 	boolean isConst = false;
-	boolean isBit = false;
 	StructUnionBlock parentStructUnion = null;
 	
 	public FieldVar(String id, String name, String type) {
@@ -92,11 +91,6 @@ public class FieldVar {
 	public boolean getIsConst() {
 		return this.isConst;
 	}
-
-	public void setIsBit(boolean isBit) {this.isBit = isBit; }
-
-	public boolean getIsBit() { return this.isBit; }
-
 	public void setParentStructUnion(StructUnionBlock parentStructUnion) {
 		this.parentStructUnion = parentStructUnion;
 	}

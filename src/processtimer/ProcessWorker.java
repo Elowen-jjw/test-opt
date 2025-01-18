@@ -1,9 +1,5 @@
 package processtimer;
 
-import org.hyperic.sigar.ProcState;
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +14,10 @@ public class ProcessWorker extends Thread{
 	}
 	
 	public void run() {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), "UTF-8"))) {
+		BufferedReader br = null;
+		try {
+			InputStream ins = process.getInputStream();
+			br = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
 			String line = "";
 			List<String> outputs = new ArrayList<String>();
 			ps.exitCode = ps.CODE_STARTED;
@@ -28,12 +27,21 @@ public class ProcessWorker extends Thread{
 			}
 			ps.output = outputs;
 			ps.exitCode = process.waitFor();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+//			e.printStackTrace();
+		}  catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			try {
+				br.close();
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
+			}
+//			e.printStackTrace();
 		}
-    }
+		catch (IOException e) {
+//			e.printStackTrace();
+		}
+	}
 
 	
 	public Process getProcess() {

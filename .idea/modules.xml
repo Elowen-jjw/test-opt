@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OptTest.iml" filepath="$PROJECT_DIR$/OptTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ccompiler-single.iml" filepath="$PROJECT_DIR$/ccompiler-single.iml" />
     </modules>
   </component>
 </project>

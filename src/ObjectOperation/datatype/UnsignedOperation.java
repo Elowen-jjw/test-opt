@@ -20,5 +20,4 @@ public class UnsignedOperation {
     public static long getUnsignedLong (long data){     
         return data&0x0FFFFFFFFFFFFFFFFl;
     }
-
 }

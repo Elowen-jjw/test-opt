@@ -1,42 +1,41 @@
 package AST_Information.Inform_Gen;
 
-import AST_Information.model.*;
-import ObjectOperation.list.CommonOperation;
-import processtimer.ProcessStatus;
-import processtimer.ProcessWorker;
-
-import javax.swing.text.html.HTMLDocument;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.io.IOException;
-import java.util.*;
+import java.util.Stack;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import AST_Information.model.*;
+import processtimer.ProcessStatus;
+import processtimer.ProcessWorker;
+
 public class AstInform_Gen {
 	
 	public static void main(String args[]) {
-		File file = new File("/home/sdu/Desktop/random7.c");
+		File file = new File("/home/jing/Desktop/csmith-testsuite/random13.c");
 		AstInform_Gen ast = new AstInform_Gen(file);
-//		for(AstVariable var: ast.getAllVars()) {
-//			if(var.getIsGlobal()) {
-//				System.out.println(var.getKind() + " " + var.getDeclareLine() + " " + var.getType() + " " + var.getName());
-//			}
-//			if(var.getIsStructUnion()){
-//				System.out.println(var.getName());
-//				for(FieldVar fvar: var.su.getChildField()){
-//					System.out.println(fvar.getName() + " " + fvar.getIsBit());
-//				}
-//			}
-//		}
+		for(AstVariable var: ast.getAllVars()) {
+			if(var.getIsGlobal() == true) {
+				System.out.println(var.getKind() + " " + var.getDeclareLine() + " " + var.getType() + " " + var.getName());
+			}
+		}
 		for(StructUnionBlock su: ast.allStructUnionMap.values()) {
 			System.out.println(su.getBlockType() + " " + su.getName());
 			for(FieldVar field: su.getChildField()) {
-				System.out.println(field.getName() + " " + field.getType() + " " + field.getIsBit());
+				System.out.println(field.getName() + " " + field.getType());
 			}
 			System.out.println();
 		}
-
 	}
 	
 	public File file;
@@ -68,8 +67,6 @@ public class AstInform_Gen {
 		
 		try {
 			List<String> execLines = testProcessThread(command);
-//			System.out.println("execlines: ");
-//			CommonOperation.printList(execLines);
 			if(execLines.size() == 1 && execLines.get(0).trim().equals("timeout")) return ;
 			
 			boolean isStart = false;
@@ -134,11 +131,9 @@ public class AstInform_Gen {
 			
 			String regexStructUnionDecl = "\\bRecordDecl\\s(0x[a-z0-9]+)(\\s[a-z]+\\s0x[0-9a-z]+)?\\s<.*>.*\\s(\\bstruct\\b)?(\\bunion\\b)?\\s([_a-zA-Z]+[_a-zA-Z0-9]*)"; //definition
 			String regexFieldDecl = "\\bFieldDecl\\s(0x[a-z0-9]+)\\s<.*>.*?(\\breferenced\\b)?\\s([_a-zA-Z]+[_a-zA-Z0-9]*)\\s'([_a-zA-Z]+[_a-zA-Z0-9,\\.\\s\\(\\)\\*\\[\\]]*)'"; 
-			String regexFieldBitValue="\\bvalue\\b:\\s[a-zA-Z]+\\s[0-9]+$";
 			Pattern pStructUnionDecl = Pattern.compile(regexStructUnionDecl);
 			Pattern pFieldDecl = Pattern.compile(regexFieldDecl);
-			Pattern pFieldBitValue = Pattern.compile(regexFieldBitValue);
-			Matcher mStructUnionDecl, mFieldDecl, mFiledBitValue;
+			Matcher mStructUnionDecl, mFieldDecl;
 			Stack<StructUnionBlock> suBlockStack = new Stack<StructUnionBlock>();
 			StructUnionBlock topSUBlock, popSUBlock;
 			
@@ -278,9 +273,6 @@ public class AstInform_Gen {
 					newVar.setIsParmVar(isParm);
 					newVar.setIsInitialized(isCinit);
 					newVar.setIsUsed(isUsed);
-					if(newVar.getIsStructUnion()){
-						newVar.setStructUnion(findStructUnionBlockByType(vartype));
-					}
 				
 					//if(newVar.getKind().equals("array")) System.out.println(newVar.getDeclareLine() +"\n");
 					allVarsMap.put(varid, newVar);	//(1)变量放入allVarsMap中
@@ -395,17 +387,6 @@ public class AstInform_Gen {
 					newFieldVar.setParentStructUnion(topSUBlock);
 					allFieldVarsMap.put(id, newFieldVar);
 				}
-
-				//4.3 FiledVar is bit
-				mFiledBitValue = pFieldBitValue.matcher(line.trim());
-				if(mFiledBitValue.find() && !suBlockStack.isEmpty()){
-					topSUBlock = suBlockStack.peek();
-					List<FieldVar> childFields = topSUBlock.getChildField();
-					if(!childFields.isEmpty()){
-						childFields.get(childFields.size()-1).setIsBit(true);
-					}
-				}
-
 				
 				//5. varUse
 				mVarUse = pVarUse.matcher(line);
@@ -486,16 +467,7 @@ public class AstInform_Gen {
 //		return allGlobalVars;
 //	}
 	
-	public StructUnionBlock findStructUnionBlockByType(String type){
-		String name = type.substring(type.lastIndexOf(" ")+1).trim();
-		StructUnionBlock su = null;
-		for(StructUnionBlock block: allStructUnionMap.values()){
-			if(block.getName().equals(name)){
-				return block;
-			}
-		}
-		return su;
-	}
+	
 	public List<AstVariable> getAllGlobalVars(){
 		List<AstVariable> allGlobalVars = new ArrayList<AstVariable>();
 		List<AstVariable> allVars = getAllVars();

@@ -1,9 +1,9 @@
 package AST_Information;
 
-import AST_Information.model.LoopStatement;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import AST_Information.model.LoopStatement;
 
 public class LoopBlock {
 	

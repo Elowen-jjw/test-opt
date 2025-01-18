@@ -31,9 +31,24 @@ Core operations is under the main folder:
 - Java >= 17
 - Csmith (Please install it following [Csmith](https://github.com/csmith-project/csmith))
 - CSMITH_HOME: After installing Csmith, please set the environment variable `CSMITH_HOME` to the installation path, with which we can locate `$CSMITH_HOME/include/csmith.h`.
+- Clang >= 14
 - add file `libsigar-amd64-linux.so` into `/usr/lib` and `/usr/lib64`
 
-### Step 2: Run
+### Step 2: Test clang ast analysis functionality
+using following instruction to test the clang ast analysis:
+If there is a sample.c
+```
+```
+
+`clang -fsyntax-only -Xclang -ast-dump example.c -w -Xanalyzer -analyzer-disable-all-checking -I $CSMITH_HOME/include`
+then it outputs:
+```
+
+```
+### Step 3: Update the corresponding folder information
+In the `/src/Overall` folder, the `swarmDir` is a folder containing all seed programs generated using Csmith, while the muIndexPath is a folder that includes all test programs (i.e., both the original and transformed programs). Within this folder, each subfolder, named after the seed program, contains all the test programs generated for that specific seed. Furthermore, the execution results of these programs are also recorded in a text file. Finally, the execution results of all programs within the same folder are compared to check for consistency. If any discrepancies are found, the corresponding program is logged in a separate text file.
+
+### Step 4: Open and Run the project
 Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/src/Overall`.
 
 # Find Bugs

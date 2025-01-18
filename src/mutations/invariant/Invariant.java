@@ -2,8 +2,8 @@ package mutations.invariant;
 
 
 import common.MuProcessException;
-import ObjectOperation.datatype.Data;
-import ObjectOperation.list.RandomAndCheck;
+import objectoperation.datatype.Data;
+import objectoperation.list.RandomAndCheck;
 import utity.*;
 
 import java.io.File;

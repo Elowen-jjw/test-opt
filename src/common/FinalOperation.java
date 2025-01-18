@@ -1,8 +1,8 @@
 package common;
 
-import ObjectOperation.file.FileModify;
-import ObjectOperation.list.CommonOperation;
-import ObjectOperation.structure.StructureTransform;
+import objectoperation.file.FileModify;
+import objectoperation.list.CommonOperation;
+import objectoperation.structure.StructureTransform;
 import utity.FixedStuff;
 import utity.InitialAndTransBlock;
 import utity.ProcessingBlock;
@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

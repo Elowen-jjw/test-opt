@@ -1,12 +1,12 @@
 package mutations.strengthreduction;
 
-import AST_Information.Inform_Gen.AstInform_Gen;
-import AST_Information.VarInform;
-import AST_Information.model.AstVariable;
-import AST_Information.model.LoopStatement;
+import astinfo.Inform_Gen.AstInform_Gen;
+import astinfo.VarInform;
+import astinfo.model.AstVariable;
+import astinfo.model.LoopStatement;
 import common.MuProcessException;
-import ObjectOperation.datatype.Data;
-import ObjectOperation.list.RandomAndCheck;
+import objectoperation.datatype.Data;
+import objectoperation.list.RandomAndCheck;
 import utity.*;
 
 import java.io.File;

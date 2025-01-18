@@ -1,10 +1,10 @@
 package common;
 
-import AST_Information.model.IfStatement;
-import AST_Information.model.LoopStatement;
-import ObjectOperation.file.FileModify;
-import ObjectOperation.list.CommonOperation;
-import ObjectOperation.structure.StructureTransform;
+import astinfo.model.IfStatement;
+import astinfo.model.LoopStatement;
+import objectoperation.file.FileModify;
+import objectoperation.list.CommonOperation;
+import objectoperation.structure.StructureTransform;
 import utity.FixedStuff;
 import utity.InitialAndTransBlock;
 import utity.ProcessingBlock;

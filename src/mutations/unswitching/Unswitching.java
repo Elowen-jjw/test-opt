@@ -1,8 +1,8 @@
 package mutations.unswitching;
 
-import ObjectOperation.datatype.RandomOperator;
-import ObjectOperation.list.RandomAndCheck;
-import ObjectOperation.structure.FindInfoInLoop;
+import objectoperation.datatype.RandomOperator;
+import objectoperation.list.RandomAndCheck;
+import objectoperation.structure.FindInfoInLoop;
 import utity.*;
 
 import java.util.*;

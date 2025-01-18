@@ -1,11 +1,11 @@
 package common;
 
-import AST_Information.Inform_Gen.AstInform_Gen;
-import AST_Information.VarInform;
-import AST_Information.model.AstVariable;
-import AST_Information.model.LoopStatement;
-import ObjectOperation.list.CommonOperation;
-import ObjectOperation.list.RandomAndCheck;
+import astinfo.Inform_Gen.AstInform_Gen;
+import astinfo.VarInform;
+import astinfo.model.AstVariable;
+import astinfo.model.LoopStatement;
+import objectoperation.list.CommonOperation;
+import objectoperation.list.RandomAndCheck;
 import utity.AvailableVariable;
 import utity.FixedStuff;
 import utity.InitialAndTransBlock;

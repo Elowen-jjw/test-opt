@@ -1,7 +1,7 @@
 package common;
 
-import ObjectOperation.file.getAllFileList;
-import processtimer.ProcessCompiler;
+import objectoperation.file.getAllFileList;
+import processmemory.ProcessCompiler;
 
 import java.io.*;
 import java.util.ArrayList;

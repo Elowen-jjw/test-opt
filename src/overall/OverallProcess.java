@@ -1,9 +1,9 @@
 package overall;
 
-import ObjectOperation.file.FileModify;
-import csmith.SwarmGen;
-import genMutation.*;
-import respectfulTestResult.RandomIterator;
+import objectoperation.file.FileModify;
+import csmithgen.SwarmGen;
+import mutationgen.*;
+import testcompareresults.RandomIterator;
 
 import java.io.File;
 import java.util.Objects;

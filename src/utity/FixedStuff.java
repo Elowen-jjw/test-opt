@@ -1,6 +1,6 @@
 package utity;
 
-import AST_Information.Inform_Gen.AstInform_Gen;
+import astinfo.Inform_Gen.AstInform_Gen;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package sanitizer;
 
 import overall.OverallProcess;
-import processtimer.ProcessCompiler;
-import processtimer.ProcessTerminal;
+import processmemory.ProcessCompiler;
+import processmemory.ProcessTerminal;
 
 import java.io.File;
 import java.util.ArrayList;

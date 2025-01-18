@@ -1,8 +1,8 @@
 package common;
 
-import AST_Information.Inform_Gen.AstInform_Gen;
-import AST_Information.model.LoopStatement;
-import ObjectOperation.list.CommonOperation;
+import astinfo.Inform_Gen.AstInform_Gen;
+import astinfo.model.LoopStatement;
+import objectoperation.list.CommonOperation;
 import utity.AvailableVariable;
 import utity.FixedStuff;
 import utity.InitialAndTransBlock;

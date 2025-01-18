@@ -1,6 +1,6 @@
 package utity;
 
-import AST_Information.model.LoopStatement;
+import astinfo.model.LoopStatement;
 
 public class LoopAllInfo {
     private FixedStuff fs;

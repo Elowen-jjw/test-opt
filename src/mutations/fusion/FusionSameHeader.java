@@ -1,8 +1,8 @@
 package mutations.fusion;
 
-import AST_Information.model.LoopStatement;
-import ObjectOperation.list.CommonOperation;
-import ObjectOperation.list.RandomAndCheck;
+import astinfo.model.LoopStatement;
+import objectoperation.list.CommonOperation;
+import objectoperation.list.RandomAndCheck;
 import common.FusionCommon;
 import common.MuProcessException;
 import utity.AvailableVariable;

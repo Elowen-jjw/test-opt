@@ -1,11 +1,11 @@
 package mutations.unrolling;
 
-import AST_Information.Inform_Gen.AstInform_Gen;
-import AST_Information.model.AstVariable;
-import AST_Information.model.LoopStatement;
-import ObjectOperation.datatype.IntegerOperation;
-import ObjectOperation.list.CommonOperation;
-import ObjectOperation.structure.FindInfoInLoop;
+import astinfo.Inform_Gen.AstInform_Gen;
+import astinfo.model.AstVariable;
+import astinfo.model.LoopStatement;
+import objectoperation.datatype.IntegerOperation;
+import objectoperation.list.CommonOperation;
+import objectoperation.structure.FindInfoInLoop;
 import utity.*;
 
 import java.io.File;

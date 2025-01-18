@@ -1,9 +1,9 @@
 package common;
 
-import ObjectOperation.list.CommonOperation;
+import objectoperation.list.CommonOperation;
 import overall.OverallProcess;
 import sanitizer.SanitizerCheck;
-import ObjectOperation.structure.StructureTransform;
+import objectoperation.structure.StructureTransform;
 import utity.ProcessingBlock;
 
 import java.io.File;

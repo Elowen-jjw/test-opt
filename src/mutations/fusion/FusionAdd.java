@@ -1,10 +1,10 @@
 package mutations.fusion;
 
-import AST_Information.model.LoopStatement;
+import astinfo.model.LoopStatement;
 import common.FusionCommon;
 import common.MuProcessException;
-import ObjectOperation.list.CommonOperation;
-import ObjectOperation.list.RandomAndCheck;
+import objectoperation.list.CommonOperation;
+import objectoperation.list.RandomAndCheck;
 import utity.*;
 
 import java.io.File;

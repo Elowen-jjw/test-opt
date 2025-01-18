@@ -9,16 +9,16 @@ By default, we uses Csmith to produce seed programs.
 
 ```
 Core operations is under the main folder:
-|-- AST_Information # The AST analysis implementation directory
+|-- astinfo # The ast analysis implementation directory
 |-- mutations # The tailored code genertion strategies and mutate implementation directory
-|-- csmith # The seed program generation implementation directory using Csmith
+|-- csmithgen # The seed program generation implementation directory using Csmith
 | |-- SwarmGen.java  # Updating configurations of Csmith
-|-- RespectfulTestResult # The programs testing execution and their results comparison implementation directory
-|-- ObjectOperation # The common operations targeted different datatype implemention directory
+|-- testcompareresults # The programs testing execution and their results comparison implementation directory
+|-- objectoperation # The common operations targeted different datatype implemention directory
 |-- common # The common information extraction functions implemention directory
-|-- Overall # The overall testing process execution implemention directory
+|-- overall # The overall testing process execution implemention directory
 | |-- Main.java  # The entrance of overall testing process
-|-- processtimer # The process dealing and real-time memory check implemention directory
+|-- processmemory # The process dealing and real-time memory check implemention directory
 |-- sanitizer # The undefined behaviour filtering implemention directory
 |-- utility # The java beans of overall testing process
 ```
@@ -86,11 +86,23 @@ The command clang -fsyntax-only -Xclang -ast-dump test.c -w -Xanalyzer -analyzer
           `-DeclRefExpr 0x55f86a0e18a0 <col:25> 'int' lvalue Var 0x55f86a0e1780 'y' 'int'
 ```
 ### Step 3: Update the corresponding folder information
-In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of the folder that contains all seed programs generated using Csmith., while the String `muIndexPath` is the absolute path of the folder that includes all test programs (i.e., both the original and transformed programs). Within the `muIndexPath`, each subfolder(假设叫random0) contains all the test programs generated for that specific seed. Furthermore, the execution results of these programs are also recorded in a text file(`output.txt`) within corresonding subfolder. Finally, the programs with discrepancies are logged in a separate text file(`incon.txt`). 
+In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of the folder that contains all seed programs generated using Csmith., while the String `muIndexPath` is the absolute path of the folder that includes all test programs (i.e., both the initial and transformed programs). Within the `muIndexPath`, structure of each subfolder is following:
+```
+|-- random 
+| |-- block # each block aligns a loop of the seed program
+| | |-- mutate # each mutate aligns an initial program and transformed program
+| | | |-- initial_program.c
+| | | |-- initial_transformed.c
+| | | |-- compiler_output.txt
+| | | |-- compiler_sanitizer.txt
+| | | |-- compiler_performance.txt
 
+```
+Finally, the programs with discrepancies are logged in the `gcc` and `llvm` folder respectively in the `muIndexPath` folder. 
 
 ### Step 4: Open and Run the project
 Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/src/Overall`.
+
 
 # Find Bugs
 We conduct a preliminary evaluation of this approach on GCC and LLVM, and have successfully detected five incorrect optimization bugs.

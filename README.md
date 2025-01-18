@@ -100,9 +100,12 @@ In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of t
 ```
 Finally, the programs with discrepancies are logged in the `gcc` and `llvm` folder respectively in the `muIndexPath` folder. 
 
-### Step 4: Open and Run the project
-Open this project using `eclipse` or `idea`, and run the `Main.java` in the `/src/Overall`.
+In the `/src/Overall/Main.java`, you also need to modify the third argument in `OverallProcess overall = new OverallProcess(swarmDir, muIndexPath, "")`. The available options are: fusion_samenumber, fusion_add, fusion_max, invariant, unswitching_compound, unrolling.
 
+If you want to change the Csmith generation configuration, you need to modify it in `SwarmGen.java`. Currently, we randomly select configurations for generation.
+
+### Step 4: Run the project
+Run the `Main.java` in the `/src/Overall`. 
 
 # Find Bugs
 We conduct a preliminary evaluation of this approach on GCC and LLVM, and have successfully detected five incorrect optimization bugs.

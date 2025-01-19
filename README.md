@@ -86,11 +86,11 @@ The command `clang -fsyntax-only -Xclang -ast-dump test.c -w -Xanalyzer -analyze
           `-DeclRefExpr 0x55f86a0e18a0 <col:25> 'int' lvalue Var 0x55f86a0e1780 'y' 'int'
 ```
 ### Step 3: Update the corresponding folder information
-In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of the folder that contains all seed programs generated using Csmith., while the String `muIndexPath` is the absolute path of the folder that includes all test programs (i.e., both the initial and transformed programs). Within the `muIndexPath`, structure of each subfolder is following:
+In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of the folder that contains all seed programs generated using Csmith, while the String `muIndexPath` is the absolute path of the folder that includes all test programs (i.e., both the initial and transformed programs). Within the `muIndexPath`, structure of each subfolder is following:
 ```
 |-- random 
-| |-- block # each block aligns a loop of the seed program
-| | |-- mutate # each mutate includes an initial program and its transformed programs
+| |-- block # Each block aligns a loop of the seed program.
+| | |-- mutate # Each mutate includes an initial program, its transformed programs and some txt output files.
 | | | |-- initial_program.c
 | | | |-- initial_transformed.c
 | | | |-- compiler_output.txt
@@ -98,7 +98,7 @@ In the `/src/Overall/Main.java`, the string `swarmDir` is the absolute path of t
 | | | |-- compiler_performance.txt
 
 ```
-Finally, the programs with discrepancies are logged in the `gcc` and `llvm` folder respectively in the `muIndexPath` folder. 
+Finally, the programs with discrepancies are logged in the `gcc` and `llvm` folder respectively within the `muIndexPath` folder. 
 
 In the `/src/Overall/Main.java`, you also need to modify the third argument in `OverallProcess overall = new OverallProcess(swarmDir, muIndexPath, "")`. The available options are: `fusion_samenumber`, `fusion_add`, `fusion_max`, `invariant`, `unswitching_compound`, `unrolling`.
 
